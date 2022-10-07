@@ -22,12 +22,14 @@ struct proc read(int i)
 }
  int main()
 {
+	printf("VAIBHAV KUMAR KAPRIYAL		60		A\n\n");
    int sum_tat=0;
    int sum_wt=0;
-   int  n;  
+   int  n;
+   float ideal=0,cycle,tp=0;  
   struct proc p[10],tmp; 
   int i,j;
-  printf("Enter the number if processes you want to enter:");
+  printf("Enter the number of processes you want to enter:");
   scanf("%d",&n);
  
  for(i=0;i<n;i++)
@@ -48,15 +50,18 @@ struct proc read(int i)
   p[0].wt= p[0].tat - p[0].bt;
   sum_tat += p[0].tat;
   sum_wt += p[0].wt;
-  printf("Process Id  Arrival Time  Brust Time  Turn Around Time  Wating Time  Completion time\n");
+  printf("Process Id  Arrival Time  Brust Time  Turn Around Time  Waiting Time  Completion time\n");
   printf("   %d		     %d		 %d		%d		%d	     %d\n",p[0].no,p[0].at,p[0].bt,p[0].tat,p[0].wt,p[0].ct);
-  for(int i=1;i<n;i++)
+  for(i=1;i<n;i++)
   {
     if(p[i].at>=p[i-1].ct){
+    	ideal=ideal+(p[i].at-p[i-1].ct);
       p[i].ct = p[i].at + p[i].bt;
+      
      }
     else
     {
+    	
       p[i].ct = p[i-1].ct +p[i].bt;
     }  
    p[i].tat= p[i].ct - p[i].at;
@@ -65,8 +70,18 @@ struct proc read(int i)
     sum_wt += p[i].wt;
     printf("   %d		     %d		 %d		%d		%d	     %d\n",p[i].no,p[i].at,p[i].bt,p[i].tat,p[i].wt,p[i].ct);     
   }
+  
   printf("Total turnaround :%d \n",sum_tat);
-  printf("Total weight time :%d \n",sum_wt);
+  printf("Average turnaround :%d \n",sum_tat/n);
+  printf("Total waiting time :%0.2f \n",sum_wt);
+  printf("Average waiting time :%0.2f \n",sum_wt/n);
+  cycle=p[n-1].ct-p[0].at;
+  float cpu=(cycle-ideal)/cycle*100;
+  printf("Ideal Time :%0.2f \n",ideal);
+  printf("Cycle Length :%0.2f \n",cycle);
+  printf("CPU Utilization :%0.2f \n",cpu);
+  tp=n/cycle;
+   printf("throughput :%0.5f \n",tp);
   
   return 0;
  }	
